@@ -10,11 +10,11 @@ import sys, json, os
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import numpy as np, pandas as pd, joblib
 
-P = os.path.dirname(os.path.abspath(__file__))
-datos = pd.read_csv(os.path.join(P, "datos_muebles_panel.csv"))
+P = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz
+datos = pd.read_csv(os.path.join(P, "datos", "datos_muebles_panel.csv"))
 
 # ---- Extraer el Pipeline entrenado ----
-pipe = joblib.load(os.path.join(P, "mejor_modelo.joblib"))
+pipe = joblib.load(os.path.join(P, "datos", "mejor_modelo.joblib"))
 pre = pipe.named_steps["pre"]
 lin = pipe.named_steps["model"]
 
@@ -54,14 +54,18 @@ MODELO = {
     "ciudades": ciudades, "subsectores": subsectores,
 }
 
+# ---- Exportar modelo portable a JSON (usado por modelo_portable.py y por la app stlite) ----
+json.dump(MODELO, open(os.path.join(P, "app", "modelo_web.json"), "w", encoding="utf-8"),
+          ensure_ascii=False, separators=(",", ":"))
+
 # ---- Filas de prueba Python ↔ JS ----
-X = pd.read_csv(os.path.join(P, "X_test_prueba.csv"))
+X = pd.read_csv(os.path.join(P, "datos", "X_test_prueba.csv"))
 y = pipe.predict(X)
 muestra = []
 for i in [0, 7, 42, 100, 500, 999]:
     fila = {k: (float(v) if k in NUM else str(v)) for k, v in X.iloc[i].to_dict().items()}
     muestra.append({"entrada": fila, "y_py": float(y[i])})
-json.dump(muestra, open(os.path.join(P, "test_web.json"), "w"), ensure_ascii=False, indent=1)
+json.dump(muestra, open(os.path.join(P, "pruebas", "test_web.json"), "w"), ensure_ascii=False, indent=1)
 
 # ---- HTML ----
 modelo_json = json.dumps(MODELO, ensure_ascii=False)
@@ -181,19 +185,27 @@ HTML = f'''<!DOCTYPE html>
   </section>
 
   <section>
+    <h2>Aplicación Streamlit completa</h2>
+    <p>La misma app Streamlit del proyecto corre íntegra en el navegador (stlite/Pyodide,
+    sin servidor): misma interfaz, mismos rangos derivados de los datos y el mismo modelo,
+    con motor portable (<code>modelo_web.json</code>) verificado equivalente a scikit-learn.</p>
+    <p><a href="streamlit.html" style="font-size:1.05rem;">→ Abrir la aplicación Streamlit</a></p>
+  </section>
+
+  <section>
     <h2>Evidencia gráfica</h2>
-    <figure><img src="fig1_predicho_vs_real.png" alt="Dispersión de predicho contra real en la prueba">
+    <figure><img src="figuras/fig1_predicho_vs_real.png" alt="Dispersión de predicho contra real en la prueba">
       <figcaption>Figura 1. Pronóstico frente a valor real (prueba): puntos alrededor de la diagonal, sin sesgo apreciable.</figcaption></figure>
-    <figure><img src="fig2_residuos.png" alt="Residuos contra pronóstico">
+    <figure><img src="figuras/fig2_residuos.png" alt="Residuos contra pronóstico">
       <figcaption>Figura 2. Residuos centrados en cero, sin patrón estructurado.</figcaption></figure>
-    <figure><img src="fig3_mape_comparacion.png" alt="Comparación del MAPE: modelo contra líneas base">
+    <figure><img src="figuras/fig3_mape_comparacion.png" alt="Comparación del MAPE: modelo contra líneas base">
       <figcaption>Figura 3. MAPE: modelo (4,08 % / 4,18 %) frente a las líneas base (11–12 %).</figcaption></figure>
   </section>
 
   <section>
     <h2>Informes</h2>
-    <p><a href="Segunda_Entrega_APA.pdf">Segunda Entrega (Fase 2) — PDF</a> ·
-       <a href="Entrega_Final_APA.pdf">Entrega Final (Fase 3) — PDF</a></p>
+    <p><a href="informes/Segunda_Entrega_APA.pdf">Segunda Entrega (Fase 2) — PDF</a> ·
+       <a href="informes/Entrega_Final_APA.pdf">Entrega Final (Fase 3) — PDF</a></p>
   </section>
 </main>
 <footer>

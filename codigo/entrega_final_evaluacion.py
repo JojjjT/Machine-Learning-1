@@ -7,12 +7,12 @@ Genera las cifras finales y un despliegue Streamlit minimo.
 import numpy as np, pandas as pd, joblib, os
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz
 P = BASE
 
-modelo = joblib.load(P + r"\mejor_modelo.joblib")
-X_test = pd.read_csv(P + r"\X_test_prueba.csv")
-y_test = pd.read_csv(P + r"\y_test_prueba.csv").iloc[:, 0]
+modelo = joblib.load(os.path.join(P, "datos", "mejor_modelo.joblib"))
+X_test = pd.read_csv(os.path.join(P, "datos", "X_test_prueba.csv"))
+y_test = pd.read_csv(os.path.join(P, "datos", "y_test_prueba.csv")).iloc[:, 0]
 
 y_pred = modelo.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
@@ -30,7 +30,7 @@ print(f"  MAPE = {mape:.2f}%   (articulo MLR: 4.89%)")
 print(f"  MAPE < 10% -> desempeno sobresaliente segun el articulo.")
 
 # linea base sobre la prueba (naive estacional) para el contraste final
-Xtr = pd.read_csv(P + r"\datos_muebles_panel.csv")  # para el mes_mean del entrenamiento
+Xtr = pd.read_csv(os.path.join(P, "datos", "datos_muebles_panel.csv"))  # para el mes_mean del entrenamiento
 # recomputar naive estacional sobre prueba: usar el promedio del mes en train+val
 tv = Xtr[Xtr["mes_num"].isin(pd.read_csv(P+r"\X_test_prueba.csv")["mes_num"].unique())]
 # nota: usamos la media global por mes de todo el conjunto (train+val) como referencia
@@ -42,6 +42,6 @@ print(f"  El modelo mejora {mape_naive - mape:.2f} puntos de MAPE sobre la linea
 
 # guardar predicciones para el informe
 pd.DataFrame({"real": y_test.values, "predicho": y_pred}).to_csv(
-    P + r"\predicciones_prueba.csv", index=False)
+    os.path.join(P, "datos", "predicciones_prueba.csv"), index=False)
 print(f"\n  Predicciones guardadas: predicciones_prueba.csv")
 print("="*60)

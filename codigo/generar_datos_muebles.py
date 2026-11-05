@@ -17,7 +17,7 @@ import pandas as pd
 import os
 
 RNG = np.random.default_rng(42)  # semilla fija = reproducibilidad
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz del proyecto
 
 # ---------------------------------------------------------------------------
 # 1. Definicion del panel: mes (60) x ciudad (6) x subsector (5) = 1800... no alcanza.
@@ -151,7 +151,7 @@ m_imp = mes_avg["ventas_muebles_millones"].corr(mes_avg["importaciones_muebles"]
 m_sent = mes_avg["ventas_muebles_millones"].corr(mes_avg["sentimiento_consumidor"])
 m_viv = mes_avg["ventas_muebles_millones"].corr(mes_avg["inicios_vivienda"])
 
-out = os.path.join(BASE, "datos_muebles_panel.csv")
+out = os.path.join(BASE, "datos", "datos_muebles_panel.csv")
 import os
 os.makedirs(os.path.dirname(out), exist_ok=True)
 df.to_csv(out, index=False, encoding="utf-8")

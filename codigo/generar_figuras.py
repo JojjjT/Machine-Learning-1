@@ -5,12 +5,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error, r2_score
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz
 P = BASE
 
-modelo = joblib.load(P + r"\mejor_modelo.joblib")
-X = pd.read_csv(P + r"\X_test_prueba.csv")
-y = pd.read_csv(P + r"\y_test_prueba.csv").iloc[:, 0]
+modelo = joblib.load(os.path.join(P, "datos", "mejor_modelo.joblib"))
+X = pd.read_csv(os.path.join(P, "datos", "X_test_prueba.csv"))
+y = pd.read_csv(os.path.join(P, "datos", "y_test_prueba.csv")).iloc[:, 0]
 yhat = modelo.predict(X)
 
 plt.rcParams.update({"font.size": 9, "axes.grid": True, "grid.alpha": 0.3})
@@ -23,7 +23,7 @@ ax.plot(lims, lims, "r--", lw=1.5, label="perfecto (y = ŷ)")
 ax.set_xlabel("Demanda real (millones USD)"); ax.set_ylabel("Demanda pronosticada")
 ax.set_title("Predicho vs. real — conjunto de prueba (1.080 filas)")
 ax.legend()
-fig.tight_layout(); fig.savefig(P + r"\fig1_predicho_vs_real.png", dpi=150); plt.close(fig)
+fig.tight_layout(); fig.savefig(os.path.join(P, "figuras", "fig1_predicho_vs_real.png"), dpi=150); plt.close(fig)
 
 # Figura 2: residuos
 resid = y - yhat
@@ -32,7 +32,7 @@ ax.scatter(yhat, resid, s=8, alpha=0.5, edgecolors="none")
 ax.axhline(0, color="r", lw=1.5)
 ax.set_xlabel("Pronóstico (millones USD)"); ax.set_ylabel("Residuo (real − pronóstico)")
 ax.set_title(f"Residuos — media {resid.mean():.3f}, |media| {np.abs(resid).mean():.3f} (sesgo ligero a subpronosticar)")
-fig.tight_layout(); fig.savefig(P + r"\fig2_residuos.png", dpi=150); plt.close(fig)
+fig.tight_layout(); fig.savefig(os.path.join(P, "figuras", "fig2_residuos.png"), dpi=150); plt.close(fig)
 
 # Figura 3: comparación MAPE modelo vs líneas base (validación y prueba)
 fig, ax = plt.subplots(figsize=(6, 4))
@@ -44,7 +44,7 @@ ax.axhline(10, color="r", ls="--", lw=1, label="umbral 10 % («outstanding»)")
 ax.bar_label(barras, fmt="%.2f%%", fontsize=9)
 ax.set_ylabel("MAPE (%)"); ax.set_title("MAPE: modelo vs líneas base — cuanto más bajo, mejor")
 ax.set_ylim(0, 14); ax.legend()
-fig.tight_layout(); fig.savefig(P + r"\fig3_mape_comparacion.png", dpi=150); plt.close(fig)
+fig.tight_layout(); fig.savefig(os.path.join(P, "figuras", "fig3_mape_comparacion.png"), dpi=150); plt.close(fig)
 
 print("Figuras generadas:")
 for f in ["fig1_predicho_vs_real", "fig2_residuos", "fig3_mape_comparacion"]:

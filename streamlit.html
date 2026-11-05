@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Streamlit en vivo — Pronóstico de demanda de muebles · ML1</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js"></script>
+  <style>
+    body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    header { background: #1f3051; color: #fff; padding: 16px 20px; }
+    header .cont { max-width: 960px; margin: 0 auto; }
+    header h1 { margin: 0 0 4px; font-size: 1.25rem; }
+    header p { margin: 2px 0; font-size: .9rem; opacity: .92; }
+    header a { color: #cfe0f5; }
+    #root { max-width: 960px; margin: 0 auto; padding: 8px 12px 40px; }
+    .nota { max-width: 960px; margin: 10px auto; padding: 8px 14px; background: #f4f7fb;
+            border: 1px solid #d0d7e2; border-radius: 5px; font-size: .85rem; color: #444; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="cont">
+      <h1>Aplicación Streamlit — en vivo en el navegador</h1>
+      <p>Proyecto Integrador ML1 · Trujillo Lagos &amp; Zambrano Mora · misma app que
+         <code>despliegue_streamlit.py</code>, ejecutada con stlite/Pyodide (WebAssembly), sin servidor.</p>
+      <p><a href="./">← Volver al inicio del sitio</a></p>
+    </div>
+  </header>
+  <div class="nota">
+    Modo navegador: scikit-learn no está disponible en WebAssembly, así que la app usa el
+    <strong>motor portable</strong> (<code>modelo_web.json</code>), verificado equivalente a
+    scikit-learn con diferencia &lt; 1e-13 (<code>test_modelo_portable.py</code>). Los rangos de
+    cada campo provienen del CSV de entrenamiento (<code>datos_muebles_panel.csv</code>), igual
+    que en la app local.
+  </div>
+  <div id="root"></div>
+  <script type="module">
+    import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js";
+    mount(
+      {
+        entrypoint: "despliegue_streamlit.py",
+        requirements: ["pandas"],
+        files: {
+          "despliegue_streamlit.py": { url: "./app/despliegue_streamlit.py" },
+          "modelo_web.json": { url: "./app/modelo_web.json" },
+          "datos_muebles_panel.csv": { url: "./datos/datos_muebles_panel.csv" },
+        },
+        streamlitConfig: {
+          "client.toolbarMode": "viewer",
+        },
+      },
+      document.getElementById("root"),
+    );
+  </script>
+</body>
+</html>

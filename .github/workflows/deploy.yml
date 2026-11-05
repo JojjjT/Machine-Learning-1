@@ -1,6 +1,10 @@
-# Publica el sitio estático (index.html) en GitHub Pages.
+# Despliegue en GitHub Pages con verificación de Streamlit.
 # Activación: Settings → Pages → Source: "GitHub Actions".
-# Cada push a main (o ejecución manual) despliega automáticamente.
+# Flujo: (1) el job "streamlit-check" EJECUTA la app Streamlit de verdad en CI
+#        — prueba funcional con AppTest + arranque real con health check —
+#        y (2) solo si pasa, el job "deploy" publica el sitio (index.html +
+#        streamlit.html, la app Streamlit visible en el navegador vía stlite).
+# Cada push a main (o ejecución manual) repite el ciclo.
 name: Deploy to GitHub Pages
 
 on:
@@ -18,7 +22,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  streamlit-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Verificar motor portable contra scikit-learn
+        run: python pruebas/test_modelo_portable.py
+      - name: Prueba funcional de la app (AppTest: local y modo navegador)
+        run: python pruebas/test_despliegue_app.py
+      - name: Arrancar Streamlit y comprobar salud (server real)
+        run: |
+          streamlit run app/despliegue_streamlit.py --server.headless true --server.port 8501 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8501/_stcore/health 2>/dev/null | grep -q "ok"; then
+              echo "Streamlit saludable en http://localhost:8501"
+              curl -fsS http://localhost:8501 > /dev/null && echo "Pagina responde (HTTP 200)"
+              pkill -f "streamlit run" || true
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Streamlit no respondio en 60s"
+          pkill -f "streamlit run" || true
+          exit 1
+
   deploy:
+    needs: streamlit-check
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

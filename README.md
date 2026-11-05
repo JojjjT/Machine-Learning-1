@@ -1,18 +1,10 @@
 # Proyecto Integrador — Machine Learning I (2026-2)
 
-**Equipo:** Joshua Samad Trujillo Lagos & Juan Andrés Zambrano Mora  
+**Equipo:** Joshua Samad Trujillo Lagos & Juan Andrés Zambrano Mora
 **Artículo base:** İnce, M. N. & Taşdemir, Ç. (2024). *Forecasting Retail Sales for Furniture and
 Furnishing Items through the Employment of Multiple Linear Regression and Holt–Winters Models.*
-Systems, 12(6), 219. https://doi.org/10.3390/systems12060219  
+Systems, 12(6), 219. https://doi.org/10.3390/systems12060219
 **Traslado local:** Pronóstico de la demanda minorista de muebles en Colombia.
-
-## 🌐 Demo desplegada
-
-**https://jojjjt.github.io/Machine-Learning-1/**
-
-Predictor interactivo en el navegador: mismas entradas, mismo preprocesamiento y misma regresión
-lineal múltiple que el entrenamiento (verificado equivalente a Python, diferencia < 1e-13).
-Se regenera en cada push a `main` mediante `.github/workflows/deploy.yml`.
 
 ## Requisitos
 - Python 3.12
@@ -27,25 +19,24 @@ Se regenera en cada push a `main` mediante `.github/workflows/deploy.yml`.
 | 2 | `segunda_entrega_modelado.py` | Partición 60/20/20, línea base **corrida**, pipeline sin fuga, CV 5-pliegues, selección del mejor modelo. Guarda `mejor_modelo.joblib` + `X/y_test_prueba.csv` |
 | 3 | `generar_figuras.py` | Genera las 3 figuras de evidencia (predicho vs. real, residuos, MAPE vs línea base) |
 | 4 | `entrega_final_evaluacion.py` | Evalúa el modelo final una vez sobre la **prueba intacta** → `predicciones_prueba.csv` |
-| 5 | `despliegue_streamlit.py` | Despliegue básico local: `streamlit run despliegue_streamlit.py` |
-| 6 | `generar_index_web.py` | Regenera `index.html` (versión estática para GitHub Pages) tras cambios en el modelo |
+| 5 | `app/despliegue_streamlit.py` | Despliegue básico: `streamlit run app/despliegue_streamlit.py` |
 | ✓ | `verificar_despliegue.py` | Verificación: el modelo carga, predice y sus columnas coinciden con las del despliegue |
 
-## Informes (APA 7 — formato + citas + referencias)
-- `Segunda_Entrega_APA` — Fase 2: datos, modelamiento, validación (PDF + DOCX)
-- `Entrega_Final_APA` — Fase 3: modelo final, resultados, despliegue, límites (PDF + DOCX)
+## Informes (APA 7 — formato + citas + referencias) — carpeta `informes/`
+- `informes/Segunda_Entrega_APA` — Fase 2: datos, modelamiento, validación (PDF + DOCX)
+- `informes/Entrega_Final_APA` — Fase 3: modelo final, resultados, despliegue, límites (PDF + DOCX)
 
 ## Entregas del proyecto (20 % de la nota)
 | Fase | Peso | Nota / Estado |
 |---|---|---|
 | Primera entrega (comprensión y planteamiento) | 20 % | 2,2 / 5,0 (retroalimentación recibida) |
 | Segunda entrega (datos, modelamiento, validación) | 40 % | **Preparada** — informe APA + código + figuras |
-| Entrega final (consolidación, despliegue, comunicación) | 40 % | **Preparada** — informe APA + despliegues |
+| Entrega final (consolidación, despliegue, comunicación) | 40 % | **Preparada** — informe APA + Streamlit + evaluación en prueba |
 
 ## Correcciones aplicadas respecto a la Primera Entrega
 1. **≥ 5.000 registros** → panel mes × ciudad × subsector (5.400 ≥ 5.000)
 2. **Solo modelos del curso** → RL múltiple, Ridge, KNN (HW como referencia externa)
-3. **Código ejecutable** → 6 scripts reproducibles con semilla 42
+3. **Código ejecutable** → 5 scripts reproducibles con semilla 42
 4. **Línea base construida y corrida** (no solo descrita) → MAPE 11,03 % de piso
 5. **MAPE justificado por costo** (no por costumbre) + declaración de su asimetría
 
@@ -57,21 +48,29 @@ Se regenera en cada push a `main` mediante `.github/workflows/deploy.yml`.
 
 ## Despliegue (Streamlit, local)
 ```bash
-streamlit run despliegue_streamlit.py
+streamlit run app/despliegue_streamlit.py
 ```
 Recibe 9 entradas (5 numéricas, pandemia, ciudad, subsector, mes), aplica el mismo Pipeline
 de preprocesamiento que el entrenamiento, y devuelve la demanda estimada en millones de USD.
 
 ## Despliegue web (GitHub Pages)
-El sitio **https://jojjjt.github.io/Machine-Learning-1/** sirve `index.html`: versión estática
-del predictor donde el mismo Pipeline (estandarización + one-hot + regresión lineal) se ejecuta
-en JavaScript. La equivalencia con Python está verificada en `test_web.json` (6 filas de prueba,
-diferencia < 1e-13).
+El repositorio incluye dos páginas:
+- `index.html` — versión estática del predictor donde el mismo Pipeline
+  (estandarización + one-hot + regresión lineal) se ejecuta en JavaScript. La equivalencia con
+  Python está verificada en `test_web.json` (6 filas de prueba, diferencia < 1e-13).
+- `streamlit.html` — **la app Streamlit completa** corriendo en el navegador con
+  stlite/Pyodide (sin servidor). En este modo la app usa el motor portable
+  (`modelo_web.json` + `modelo_portable.py`), verificado equivalente a scikit-learn
+  (`test_modelo_portable.py`, diferencia < 1e-13).
 
-Publicación automática mediante `.github/workflows/deploy.yml`: cada push a `main` despliega
-el sitio (configurado en Settings → Pages → Source: GitHub Actions).
+El workflow `.github/workflows/deploy.yml` **ejecuta Streamlit en CI antes de publicar**
+(`streamlit-check`: prueba funcional con AppTest + health check del servidor real) y
+solo despliega si pasa. Activación:
+**Settings → Pages → Source: GitHub Actions**. Cada push a `main` despliega
+automáticamente en `https://<usuario>.github.io/<repo>/`.
 
-Para regenerar `index.html` tras cambios en el modelo:
+Pruebas locales:
 ```bash
-python generar_index_web.py
+python pruebas/test_modelo_portable.py    # motor portable == scikit-learn
+python pruebas/test_despliegue_app.py     # app en modo local y modo navegador
 ```

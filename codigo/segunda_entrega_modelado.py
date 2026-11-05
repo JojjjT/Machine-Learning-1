@@ -28,12 +28,12 @@ import os
 warnings.filterwarnings("ignore")
 
 SEED = 42  # ultimos dos digitos del codigo de estudiante (semilla)
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz
 
 # ---------------------------------------------------------------------------
 # 0. Carga
 # ---------------------------------------------------------------------------
-df = pd.read_csv(os.path.join(BASE, "datos_muebles_panel.csv"))
+df = pd.read_csv(os.path.join(BASE, "datos", "datos_muebles_panel.csv"))
 print(f"[0] Dataset: {len(df)} filas, {df.shape[1]} columnas")
 
 OBJ = "ventas_muebles_millones"
@@ -140,8 +140,8 @@ else:
 # guardar el modelo y las particiones para la Entrega Final
 import joblib
 modelos[mejor].fit(X_trainval, y_trainval)  # reentrena con train+val para el reporte final
-joblib.dump(modelos[mejor], os.path.join(BASE, "mejor_modelo.joblib"))
-X_test.to_csv(os.path.join(BASE, "X_test_prueba.csv"), index=False)
-y_test.to_csv(os.path.join(BASE, "y_test_prueba.csv"), index=False)
+joblib.dump(modelos[mejor], os.path.join(BASE, "datos", "mejor_modelo.joblib"))
+X_test.to_csv(os.path.join(BASE, "datos", "X_test_prueba.csv"), index=False)
+y_test.to_csv(os.path.join(BASE, "datos", "y_test_prueba.csv"), index=False)
 print(f"\n[6] Modelo final '{mejor}' guardado. Conjunto de PRUEBA ({len(X_test)} filas) "
       f"reservado intacto para la Entrega Final.")

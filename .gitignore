@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Entornos
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Temporales de Office
+~$*.docx
+
+# Imágenes de preview/renderizado (no necesarias para el repo)
+*_preview/
+_chk/
+_fix/
+_pv/

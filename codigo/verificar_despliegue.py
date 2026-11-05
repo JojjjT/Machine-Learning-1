@@ -2,12 +2,12 @@
 """Verificación rápida del despliegue: el modelo carga y predice con las columnas correctas."""
 import sys, os
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-P = os.path.dirname(os.path.abspath(__file__))
+P = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz
 import pandas as pd, joblib
 
-m = joblib.load(os.path.join(P, "mejor_modelo.joblib"))
-X = pd.read_csv(os.path.join(P, "X_test_prueba.csv"))
-y = pd.read_csv(os.path.join(P, "y_test_prueba.csv")).iloc[:, 0]
+m = joblib.load(os.path.join(P, "datos", "mejor_modelo.joblib"))
+X = pd.read_csv(os.path.join(P, "datos", "X_test_prueba.csv"))
+y = pd.read_csv(os.path.join(P, "datos", "y_test_prueba.csv")).iloc[:, 0]
 
 fila = X.iloc[0:1].copy()
 p = m.predict(fila)[0]
