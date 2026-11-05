@@ -1,0 +1,86 @@
+[
+ {
+  "entrada": {
+   "importaciones_muebles": 38.56,
+   "sentimiento_consumidor": 92.02,
+   "inicios_vivienda": 197.3,
+   "poblacion_miles": 5658.4,
+   "indice_precios_productor": 118.9,
+   "pandemia": 0.0,
+   "ciudad": "Barranquilla",
+   "subsector": "Muebles de comedor",
+   "mes_num": "4"
+  },
+  "y_py": 101.62007898282278
+ },
+ {
+  "entrada": {
+   "importaciones_muebles": -18.38,
+   "sentimiento_consumidor": 151.01,
+   "inicios_vivienda": 58.4,
+   "poblacion_miles": 6106.7,
+   "indice_precios_productor": 111.39,
+   "pandemia": 1.0,
+   "ciudad": "Cartagena",
+   "subsector": "Pisos y revestimientos",
+   "mes_num": "3"
+  },
+  "y_py": 67.70299340010953
+ },
+ {
+  "entrada": {
+   "importaciones_muebles": 53.69,
+   "sentimiento_consumidor": 75.84,
+   "inicios_vivienda": 210.9,
+   "poblacion_miles": 5777.9,
+   "indice_precios_productor": 128.85,
+   "pandemia": 0.0,
+   "ciudad": "Bucaramanga",
+   "subsector": "Electrodomesticos menores",
+   "mes_num": "6"
+  },
+  "y_py": 98.27460922395692
+ },
+ {
+  "entrada": {
+   "importaciones_muebles": 29.05,
+   "sentimiento_consumidor": 102.85,
+   "inicios_vivienda": 187.9,
+   "poblacion_miles": 6604.7,
+   "indice_precios_productor": 110.83,
+   "pandemia": 0.0,
+   "ciudad": "Cali",
+   "subsector": "Cocinas integrales",
+   "mes_num": "1"
+  },
+  "y_py": 95.93957158250313
+ },
+ {
+  "entrada": {
+   "importaciones_muebles": 57.55,
+   "sentimiento_consumidor": 53.49,
+   "inicios_vivienda": 229.4,
+   "poblacion_miles": 5653.0,
+   "indice_precios_productor": 115.82,
+   "pandemia": 0.0,
+   "ciudad": "Bucaramanga",
+   "subsector": "Electrodomesticos menores",
+   "mes_num": "3"
+  },
+  "y_py": 100.70230884315572
+ },
+ {
+  "entrada": {
+   "importaciones_muebles": 155.15,
+   "sentimiento_consumidor": 68.73,
+   "inicios_vivienda": 621.6,
+   "poblacion_miles": 18221.9,
+   "indice_precios_productor": 123.7,
+   "pandemia": 0.0,
+   "ciudad": "Bogota",
+   "subsector": "Muebles de cocina",
+   "mes_num": "7"
+  },
+  "y_py": 133.89862621688425
+ }
+]
