@@ -1,6 +1,6 @@
 # Proyecto Integrador — Machine Learning I (2026-2)
 
-**Equipo:** Joshua Samad Trujillo Lagos & Juan Andrés Zambrano Mora
+**Equipo:** Joshua Samad Trujillo Lagos & Juan Andrés Zambrano Mora (Cancelación)
 **Artículo base:** İnce, M. N. & Taşdemir, Ç. (2024). *Forecasting Retail Sales for Furniture and
 Furnishing Items through the Employment of Multiple Linear Regression and Holt–Winters Models.*
 Systems, 12(6), 219. https://doi.org/10.3390/systems12060219
