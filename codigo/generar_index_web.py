@@ -134,7 +134,7 @@ HTML = f'''<!DOCTYPE html>
   <div class="cont">
     <h1>Pronóstico de demanda minorista de muebles</h1>
     <p>Proyecto Integrador — Machine Learning I (2026-2) · Universidad Externado de Colombia</p>
-    <p>Joshua Samad Trujillo Lagos y Juan Andrés Zambrano Mora</p>
+    <p>Santiago Bernal Rozo y Joshua Samad Trujillo Lagos</p>
     <p>Artículo base: İnce &amp; Taşdemir (2024), <em>Systems</em>, 12(6), 219 — regresión lineal múltiple aplicada a un panel mes × ciudad × subsector en Colombia.</p>
   </div>
 </header>

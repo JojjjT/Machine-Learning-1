@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Proyecto Integrador — Machine Learning I (Trujillo & Zambrano, paper 4)
+Proyecto Integrador — Machine Learning I (Bernal & Trujillo, paper 4)
 SEGUNDA ENTREGA (Fase 2): datos, modelamiento y validación SIN FUGA.
 
 Corrige los 5 puntos de la retro de la Primera Entrega:

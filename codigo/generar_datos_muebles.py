@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Genera el dataset del Proyecto Integrador (equipo Trujillo & Zambrano, paper 4).
+Genera el dataset del Proyecto Integrador (equipo Bernal & Trujillo, paper 4).
 Vía: SIMULACIÓN FUNDAMENTADA — panel mes × ciudad × subsector, >= 5000 filas.
 
 Estructura replicada del paper (İnce & Taşdemir 2024):
