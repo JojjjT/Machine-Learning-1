@@ -4,107 +4,78 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pronóstico de demanda minorista de muebles — Proyecto Integrador ML1</title>
-<style>
-  :root { --tinta:#1a1a1a; --azul:#1f3051; --acento:#2e5b9a; --linea:#d0d7e2; --fondo:#ffffff; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--fondo); color:var(--tinta);
-         font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-         line-height:1.55; font-size:16px; }
-  header { background:var(--azul); color:#fff; padding:28px 20px; }
-  header .cont { max-width:880px; margin:0 auto; }
-  header h1 { margin:0 0 6px; font-size:1.6rem; line-height:1.3; }
-  header p { margin:2px 0; opacity:.92; font-size:.95rem; }
-  main { max-width:880px; margin:0 auto; padding:24px 20px 48px; }
-  section { margin-bottom:34px; }
-  h2 { font-size:1.2rem; color:var(--azul); border-bottom:2px solid var(--linea);
-        padding-bottom:6px; margin:0 0 14px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; }
-  .campo label { display:block; font-weight:600; font-size:.9rem; margin-bottom:4px; }
-  .campo input, .campo select { width:100%; padding:9px 10px; font-size:1rem;
-      border:1px solid var(--linea); border-radius:5px; background:#fff; }
-  .campo input:focus, .campo select:focus { outline:2px solid var(--acento); outline-offset:1px; }
-  .campo small { color:#555; font-size:.78rem; }
-  button { margin-top:16px; background:var(--acento); color:#fff; border:none;
-      padding:12px 26px; font-size:1.02rem; border-radius:5px; cursor:pointer; min-height:44px; }
-  button:hover { background:#1f3f73; }
-  #resultado { margin-top:14px; padding:12px 14px; border:1px solid var(--linea);
-      border-radius:5px; background:#f4f7fb; font-size:1.05rem; display:none; }
-  #resultado.error { background:#fdf0f0; border-color:#c98a8a; }
-  table { border-collapse:collapse; width:100%; font-size:.93rem; }
-  th, td { border:1px solid var(--linea); padding:8px 10px; text-align:left; }
-  th { background:#eef1f6; color:var(--azul); }
-  fig { display:block; margin:14px 0; }
-  fig img { max-width:100%; height:auto; border:1px solid var(--linea); border-radius:4px; }
-  fig figcaption { font-size:.85rem; color:#555; margin-top:5px; }
-  footer { border-top:1px solid var(--linea); padding:18px 20px; font-size:.87rem;
-      color:#555; text-align:center; }
-  footer a { color:var(--acento); }
-</style>
 </head>
 <body>
+
 <header>
-  <div class="cont">
-    <h1>Pronóstico de demanda minorista de muebles</h1>
-    <p>Proyecto Integrador — Machine Learning I (2026-2) · Universidad Externado de Colombia</p>
-    <p>Joshua Samad Trujillo Lagos y Juan Andrés Zambrano Mora</p>
-    <p>Artículo base: İnce &amp; Taşdemir (2024), <em>Systems</em>, 12(6), 219 — regresión lineal múltiple aplicada a un panel mes × ciudad × subsector en Colombia.</p>
-  </div>
+  <h1>Pronóstico de demanda minorista de muebles</h1>
+  <p>Proyecto Integrador — Machine Learning I (2026-2) · Universidad Externado de Colombia</p>
+  <p>Joshua Samad Trujillo Lagos y Santiago Bernal Rozo</p>
+  <p>Artículo base: İnce &amp; Taşdemir (2024), <em>Systems</em>, 12(6), 219 — regresión lineal múltiple aplicada a un panel mes × ciudad × subsector en Colombia.</p>
 </header>
+
 <main>
+
   <section>
     <h2>Resultados del modelo</h2>
     <table>
-      <tr><th>Métrica</th><th>Validación</th><th>Prueba (1.080 filas)</th></tr>
-      <tr><td>MAPE (métrica principal)</td><td>4,08 %</td><td>4,18 %</td></tr>
-      <tr><td>R²</td><td>0,8833</td><td>0,8729</td></tr>
-      <tr><td>Línea base naïve estacional (MAPE)</td><td>11,03 %</td><td>10,67 %</td></tr>
+      <thead>
+        <tr><th>Métrica</th><th>Validación</th><th>Prueba (1.080 filas)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>MAPE (métrica principal)</td><td>4,08 %</td><td>4,18 %</td></tr>
+        <tr><td>R²</td><td>0,8833</td><td>0,8729</td></tr>
+        <tr><td>Línea base naïve estacional (MAPE)</td><td>11,03 %</td><td>10,67 %</td></tr>
+      </tbody>
     </table>
-    <p style="font-size:.9rem;color:#555;">El modelo supera a la línea base en 6,50 puntos de MAPE y se
-    mantiene bajo el umbral del 10 % que el artículo califica como desempeño sobresaliente.</p>
+    <p>El modelo supera a la línea base en 6,50 puntos de MAPE y se mantiene bajo el umbral del 10 % que el artículo califica como desempeño sobresaliente.</p>
   </section>
 
   <section>
     <h2>Predictor interactivo</h2>
-    <p style="font-size:.93rem;">Todos los campos admiten valores dentro del rango observado en los datos
-    de entrenamiento; el valor por defecto es la mediana de cada columna. La predicción se calcula en el
-    navegador con el mismo pipeline del entrenamiento (estandarización + codificación one-hot + regresión lineal).</p>
-    <div class="grid">
-        <div class="campo">
-          <label for="importaciones_muebles">Importaciones de muebles (USD miles)</label>
-          <input type="number" id="importaciones_muebles" step="0.01"
-                 min="-133.05" max="236.92" value="57.38">
-          <small>Rango de entrenamiento: -133.1 – 236.9</small>
-        </div>
-        <div class="campo">
-          <label for="sentimiento_consumidor">Índice de sentimiento del consumidor</label>
-          <input type="number" id="sentimiento_consumidor" step="0.01"
-                 min="43.55" max="195.02" value="77.78">
-          <small>Rango de entrenamiento: 43.5 – 195.0</small>
-        </div>
-        <div class="campo">
-          <label for="inicios_vivienda">Inicios de vivienda (unidades)</label>
-          <input type="number" id="inicios_vivienda" step="0.01"
-                 min="15.70" max="877.40" value="229.60">
-          <small>Rango de entrenamiento: 15.7 – 877.4</small>
-        </div>
-        <div class="campo">
-          <label for="poblacion_miles">Población (miles)</label>
-          <input type="number" id="poblacion_miles" step="0.01"
-                 min="5533.30" max="18470.50" value="6436.05">
-          <small>Rango de entrenamiento: 5533.3 – 18470.5</small>
-        </div>
-        <div class="campo">
-          <label for="indice_precios_productor">Índice de precios al productor</label>
-          <input type="number" id="indice_precios_productor" step="0.01"
-                 min="103.83" max="131.75" value="118.35">
-          <small>Rango de entrenamiento: 103.8 – 131.8</small>
-        </div>
-      <div class="campo">
-        <label for="pandemia">Pandemia (mar–may 2020)</label>
-        <select id="pandemia"><option value="0">0 — sin pandemia</option><option value="1">1 — pandemia</option></select>
-      </div>
-      <div class="campo">
-        <label for="ciudad">Ciudad</label>
+    <p>Todos los campos admiten valores dentro del rango observado en los datos de entrenamiento; el valor por defecto es la mediana de cada columna. La predicción se calcula en el navegador con el mismo pipeline del entrenamiento (estandarización + codificación one-hot + regresión lineal).</p>
+
+    <form>
+      <p>
+        <label for="importaciones_muebles">Importaciones de muebles (USD miles)</label><br>
+        <input type="number" id="importaciones_muebles" step="0.01" min="-133.05" max="236.92" value="57.38"><br>
+        <small>Rango de entrenamiento: -133.1 – 236.9</small>
+      </p>
+
+      <p>
+        <label for="sentimiento_consumidor">Índice de sentimiento del consumidor</label><br>
+        <input type="number" id="sentimiento_consumidor" step="0.01" min="43.55" max="195.02" value="77.78"><br>
+        <small>Rango de entrenamiento: 43.5 – 195.0</small>
+      </p>
+
+      <p>
+        <label for="inicios_vivienda">Inicios de vivienda (unidades)</label><br>
+        <input type="number" id="inicios_vivienda" step="0.01" min="15.70" max="877.40" value="229.60"><br>
+        <small>Rango de entrenamiento: 15.7 – 877.4</small>
+      </p>
+
+      <p>
+        <label for="poblacion_miles">Población (miles)</label><br>
+        <input type="number" id="poblacion_miles" step="0.01" min="5533.30" max="18470.50" value="6436.05"><br>
+        <small>Rango de entrenamiento: 5533.3 – 18470.5</small>
+      </p>
+
+      <p>
+        <label for="indice_precios_productor">Índice de precios al productor</label><br>
+        <input type="number" id="indice_precios_productor" step="0.01" min="103.83" max="131.75" value="118.35"><br>
+        <small>Rango de entrenamiento: 103.8 – 131.8</small>
+      </p>
+
+      <p>
+        <label for="pandemia">Pandemia (mar–may 2020)</label><br>
+        <select id="pandemia">
+          <option value="0">0 — sin pandemia</option>
+          <option value="1">1 — pandemia</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="ciudad">Ciudad</label><br>
         <select id="ciudad">
           <option value="Barranquilla">Barranquilla</option>
           <option value="Bogota">Bogota</option>
@@ -113,9 +84,10 @@
           <option value="Cartagena">Cartagena</option>
           <option value="Medellin">Medellin</option>
         </select>
-      </div>
-      <div class="campo">
-        <label for="subsector">Subsector</label>
+      </p>
+
+      <p>
+        <label for="subsector">Subsector</label><br>
         <select id="subsector">
           <option value="Accesorios y tapiceria">Accesorios y tapiceria</option>
           <option value="Articulos de decoracion">Articulos de decoracion</option>
@@ -133,48 +105,62 @@
           <option value="Pisos y revestimientos">Pisos y revestimientos</option>
           <option value="Puertas y ventanas">Puertas y ventanas</option>
         </select>
-      </div>
-      <div class="campo">
-        <label for="mes_num">Mes (1–12)</label>
+      </p>
+
+      <p>
+        <label for="mes_num">Mes (1–12)</label><br>
         <input type="range" id="mes_num" min="1" max="12" step="1" value="12"
-               oninput="document.getElementById('mes_txt').textContent=this.value">
+               oninput="document.getElementById('mes_txt').textContent=this.value"><br>
         <small>Mes seleccionado: <strong id="mes_txt">12</strong> (diciembre, pico estacional)</small>
-      </div>
-    </div>
-    <button id="btn" type="button">Predecir</button>
+      </p>
+    </form>
+
+    <p><button id="btn" type="button">Predecir</button></p>
     <div id="resultado" role="status" aria-live="polite"></div>
   </section>
 
   <section>
     <h2>Aplicación Streamlit completa</h2>
-    <p>La misma app Streamlit del proyecto corre íntegra en el navegador (stlite/Pyodide,
-    sin servidor): misma interfaz, mismos rangos derivados de los datos y el mismo modelo,
-    con motor portable (<code>modelo_web.json</code>) verificado equivalente a scikit-learn.</p>
-    <p><a href="streamlit.html" style="font-size:1.05rem;">→ Abrir la aplicación Streamlit</a></p>
+    <p>La misma app Streamlit del proyecto corre íntegra en el navegador (stlite/Pyodide, sin servidor): misma interfaz, mismos rangos derivados de los datos y el mismo modelo, con motor portable (<code>modelo_web.json</code>) verificado equivalente a scikit-learn.</p>
+    <p><a href="streamlit.html">→ Abrir la aplicación Streamlit</a></p>
   </section>
 
   <section>
     <h2>Evidencia gráfica</h2>
-    <figure><img src="figuras/fig1_predicho_vs_real.png" alt="Dispersión de predicho contra real en la prueba">
-      <figcaption>Figura 1. Pronóstico frente a valor real (prueba): puntos alrededor de la diagonal, sin sesgo apreciable.</figcaption></figure>
-    <figure><img src="figuras/fig2_residuos.png" alt="Residuos contra pronóstico">
-      <figcaption>Figura 2. Residuos centrados en cero, sin patrón estructurado.</figcaption></figure>
-    <figure><img src="figuras/fig3_mape_comparacion.png" alt="Comparación del MAPE: modelo contra líneas base">
-      <figcaption>Figura 3. MAPE: modelo (4,08 % / 4,18 %) frente a las líneas base (11–12 %).</figcaption></figure>
+
+    <figure>
+      <img src="figuras/fig1_predicho_vs_real.png" alt="Dispersión de predicho contra real en la prueba">
+      <figcaption>Figura 1. Pronóstico frente a valor real (prueba): puntos alrededor de la diagonal, sin sesgo apreciable.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="figuras/fig2_residuos.png" alt="Residuos contra pronóstico">
+      <figcaption>Figura 2. Residuos centrados en cero, sin patrón estructurado.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="figuras/fig3_mape_comparacion.png" alt="Comparación del MAPE: modelo contra líneas base">
+      <figcaption>Figura 3. MAPE: modelo (4,08 % / 4,18 %) frente a las líneas base (11–12 %).</figcaption>
+    </figure>
   </section>
 
   <section>
     <h2>Informes</h2>
-    <p><a href="informes/Segunda_Entrega_APA.pdf">Segunda Entrega (Fase 2) — PDF</a> ·
-       <a href="informes/Entrega_Final_APA.pdf">Entrega Final (Fase 3) — PDF</a></p>
+    <p>
+      <a href="informes/Segunda_Entrega_APA.pdf">Segunda Entrega (Fase 2) — PDF</a> ·
+      <a href="informes/Entrega_Final_APA.pdf">Entrega Final (Fase 3) — PDF</a>
+    </p>
   </section>
+
 </main>
+
 <footer>
   <p>Trabajo académico de Machine Learning I. Referencia: İnce, M. N., &amp; Taşdemir, Ç. (2024).
   <a href="https://doi.org/10.3390/systems12060219">doi.org/10.3390/systems12060219</a></p>
 </footer>
 
 <script id="modelo-datos" type="application/json">{"numCols": ["importaciones_muebles", "sentimiento_consumidor", "inicios_vivienda", "poblacion_miles", "indice_precios_productor", "pandemia"], "num": {"importaciones_muebles": {"mean": 65.70654166666667, "scale": 47.98014954638673}, "sentimiento_consumidor": {"mean": 84.7164675925926, "scale": 26.599163687317137}, "inicios_vivienda": {"mean": 282.615625, "scale": 164.38725891149062}, "poblacion_miles": {"mean": 8566.523981481481, "scale": 4383.898576773735}, "indice_precios_productor": {"mean": 118.25370833333334, "scale": 7.813181039834342}, "pandemia": {"mean": 0.049305555555555554, "scale": 0.2165052372274481}}, "catCols": ["ciudad", "subsector", "mes_num"], "cats": {"ciudad": ["Barranquilla", "Bogota", "Bucaramanga", "Cali", "Cartagena", "Medellin"], "subsector": ["Accesorios y tapiceria", "Articulos de decoracion", "Cocinas integrales", "Colchones y camas", "Electrodomesticos menores", "Equipos de aire acondicionado", "Iluminacion", "Muebles de cocina", "Muebles de comedor", "Muebles de oficina", "Muebles de sala", "Muebles modulados", "Muebles para ninos", "Pisos y revestimientos", "Puertas y ventanas"], "mes_num": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}, "coef": [3.265540910059891, -2.803513807210398, 0.3771095232477051, -21.430058914201037, 1.4589540863960317, -2.647055564299804, -17.802408573663016, 57.94258781159791, -17.802496348746036, -11.557490625696412, -14.945695028905373, 4.165502765447077, -8.434236821134917, -6.017059273643259, 2.0179911512571307, 10.274526864818887, -4.429012930038207, -1.835381440154132, 5.89634319326259, 8.061943734901067, 3.9723584636170606, 10.12128567983057, 0.3558218799186038, -9.507856086789543, 8.970755820816903, -9.175217764630139, -10.272262472040481, -3.6494533205560766, -4.820915139885222, 0.9838701894930907, -1.6214402200251155, 0.15758453524554591, -0.6055534198116037, -0.022146131233148812, 1.520552914443057, -0.23863322174149032, 2.1147306988400603, 2.9540413465437325, 3.227361768699149], "intercept": 104.94521572763719, "rango": {"importaciones_muebles": {"min": -133.05, "max": 236.92, "med": 57.375}, "sentimiento_consumidor": {"min": 43.55, "max": 195.02, "med": 77.78}, "inicios_vivienda": {"min": 15.7, "max": 877.4, "med": 229.6}, "poblacion_miles": {"min": 5533.3, "max": 18470.5, "med": 6436.049999999999}, "indice_precios_productor": {"min": 103.83, "max": 131.75, "med": 118.35499999999999}, "pandemia": {"min": 0.0, "max": 1.0, "med": 0.0}}, "ciudades": ["Barranquilla", "Bogota", "Bucaramanga", "Cali", "Cartagena", "Medellin"], "subsectores": ["Accesorios y tapiceria", "Articulos de decoracion", "Cocinas integrales", "Colchones y camas", "Electrodomesticos menores", "Equipos de aire acondicionado", "Iluminacion", "Muebles de cocina", "Muebles de comedor", "Muebles de oficina", "Muebles de sala", "Muebles modulados", "Muebles para ninos", "Pisos y revestimientos", "Puertas y ventanas"]}</script>
+
 <script>
 // --MODELO CORE START--
 const MODELO = JSON.parse(document.getElementById("modelo-datos").textContent);
@@ -194,6 +180,7 @@ function predecir(v) {
   return y;
 }
 // --MODELO CORE END--
+
 document.getElementById("btn").addEventListener("click", () => {
   try {
     const v = {};
@@ -202,19 +189,19 @@ document.getElementById("btn").addEventListener("click", () => {
     v.ciudad = document.getElementById("ciudad").value;
     v.subsector = document.getElementById("subsector").value;
     v.mes_num = Number(document.getElementById("mes_num").value);
+
     const y = predecir(v);
+
     const el = document.getElementById("resultado");
-    el.className = "";
-    el.style.display = "block";
     el.innerHTML = "<strong>Demanda estimada: " + y.toFixed(2) +
       " millones de USD</strong><br><small>Mes " + v.mes_num + " · " + v.ciudad +
       " · " + v.subsector + " · misma transformación que el entrenamiento (escala + one-hot).</small>";
   } catch (e) {
     const el = document.getElementById("resultado");
-    el.className = "error"; el.style.display = "block";
     el.textContent = "Error: " + e.message;
   }
 });
 </script>
+
 </body>
 </html>
