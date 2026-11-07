@@ -4,14 +4,255 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pronóstico de demanda minorista de muebles — Proyecto Integrador ML1</title>
+<style>
+  :root {
+    --tinta: #1b1b1b;
+    --apagado: #555;
+    --azul: #1f3051;
+    --acento: #2e5b9a;
+    --linea: #c9ced6;
+    --papel: #ffffff;
+    --fondo: #f7f6f2;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { font-size: 16px; }
+
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--tinta);
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+                 Palatino, Georgia, "Times New Roman", serif;
+    line-height: 1.65;
+  }
+
+  header {
+    background: var(--papel);
+    border-bottom: 3px double var(--azul);
+    padding: 2.4rem 1.25rem 1.6rem;
+  }
+
+  .header-inner,
+  main,
+  footer {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  header h1 {
+    font-size: 1.55rem;
+    line-height: 1.25;
+    margin: 0 0 .6rem;
+    color: var(--azul);
+    font-weight: 600;
+    letter-spacing: .01em;
+  }
+
+  header p {
+    margin: .25rem 0;
+    color: var(--apagado);
+    font-size: .95rem;
+  }
+
+  header .authors {
+    color: var(--tinta);
+    font-weight: 600;
+  }
+
+  main {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  section {
+    margin: 0 0 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: var(--azul);
+    font-weight: 600;
+    border-bottom: 1px solid var(--linea);
+    padding-bottom: .35rem;
+    margin: 0 0 1rem;
+    font-variant: small-caps;
+    letter-spacing: .04em;
+  }
+
+  p {
+    margin: .65rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .94rem;
+    margin: .75rem 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  caption {
+    caption-side: top;
+    text-align: left;
+    font-size: .86rem;
+    color: var(--apagado);
+    padding-bottom: .35rem;
+    font-style: italic;
+  }
+
+  th,
+  td {
+    padding: .45rem .55rem;
+    text-align: left;
+    vertical-align: top;
+    border: 0;
+  }
+
+  thead th {
+    border-top: 2px solid var(--azul);
+    border-bottom: 1px solid var(--azul);
+    color: var(--azul);
+    font-weight: 600;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 2px solid var(--azul);
+  }
+
+  tbody tr + tr td {
+    border-top: 1px solid var(--linea);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .field label {
+    display: block;
+    font-weight: 600;
+    font-size: .92rem;
+    margin-bottom: .2rem;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    padding: .55rem .6rem;
+    font: inherit;
+    font-size: .98rem;
+    color: var(--tinta);
+    background: var(--papel);
+    border: 1px solid var(--linea);
+    border-radius: 2px;
+  }
+
+  .field input:focus,
+  .field select:focus {
+    outline: 2px solid var(--acento);
+    outline-offset: 1px;
+  }
+
+  .hint {
+    display: block;
+    color: var(--apagado);
+    font-size: .8rem;
+    margin-top: .2rem;
+  }
+
+  button {
+    margin-top: .75rem;
+    background: var(--azul);
+    color: #fff;
+    border: 1px solid var(--azul);
+    padding: .65rem 1.4rem;
+    font: inherit;
+    font-size: 1rem;
+    border-radius: 2px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  button:hover {
+    background: #16233d;
+  }
+
+  #resultado {
+    margin-top: 1rem;
+    padding: .8rem 1rem;
+    border-left: 4px solid var(--acento);
+    background: #f2f4f8;
+    font-size: 1rem;
+  }
+
+  #resultado[hidden] {
+    display: none;
+  }
+
+  #resultado.error {
+    border-left-color: #8a2f2f;
+    background: #fbf1f1;
+  }
+
+  figure {
+    margin: 1.25rem 0;
+  }
+
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--linea);
+    background: #fff;
+    padding: .25rem;
+  }
+
+  figcaption {
+    font-size: .86rem;
+    color: var(--apagado);
+    margin-top: .4rem;
+    font-style: italic;
+  }
+
+  a {
+    color: var(--acento);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  footer {
+    border-top: 1px solid var(--linea);
+    padding: 1.25rem;
+    color: var(--apagado);
+    font-size: .86rem;
+    text-align: center;
+    background: var(--papel);
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .9em;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.35rem; }
+    p { text-align: left; }
+  }
+</style>
 </head>
 <body>
 
 <header>
-  <h1>Pronóstico de demanda minorista de muebles</h1>
-  <p>Proyecto Integrador — Machine Learning I (2026-2) · Universidad Externado de Colombia</p>
-  <p>Joshua Samad Trujillo Lagos y Santiago Bernal Rozo</p>
-  <p>Artículo base: İnce &amp; Taşdemir (2024), <em>Systems</em>, 12(6), 219 — regresión lineal múltiple aplicada a un panel mes × ciudad × subsector en Colombia.</p>
+  <div class="header-inner">
+    <h1>Pronóstico de demanda minorista de muebles</h1>
+    <p>Proyecto Integrador — Machine Learning I (2026-2) · Universidad Externado de Colombia</p>
+    <p class="authors">Joshua Samad Trujillo Lagos y Juan Andrés Zambrano Mora</p>
+    <p>Artículo base: İnce &amp; Taşdemir (2024), <em>Systems</em>, 12(6), 219 — regresión lineal múltiple aplicada a un panel mes × ciudad × subsector en Colombia.</p>
+  </div>
 </header>
 
 <main>
@@ -19,6 +260,7 @@
   <section>
     <h2>Resultados del modelo</h2>
     <table>
+      <caption>Desempeño del modelo de regresión lineal múltiple</caption>
       <thead>
         <tr><th>Métrica</th><th>Validación</th><th>Prueba (1.080 filas)</th></tr>
       </thead>
@@ -35,47 +277,47 @@
     <h2>Predictor interactivo</h2>
     <p>Todos los campos admiten valores dentro del rango observado en los datos de entrenamiento; el valor por defecto es la mediana de cada columna. La predicción se calcula en el navegador con el mismo pipeline del entrenamiento (estandarización + codificación one-hot + regresión lineal).</p>
 
-    <form>
-      <p>
-        <label for="importaciones_muebles">Importaciones de muebles (USD miles)</label><br>
-        <input type="number" id="importaciones_muebles" step="0.01" min="-133.05" max="236.92" value="57.38"><br>
-        <small>Rango de entrenamiento: -133.1 – 236.9</small>
-      </p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="importaciones_muebles">Importaciones de muebles (USD miles)</label>
+        <input type="number" id="importaciones_muebles" step="0.01" min="-133.05" max="236.92" value="57.38">
+        <small class="hint">Rango de entrenamiento: -133.1 – 236.9</small>
+      </div>
 
-      <p>
-        <label for="sentimiento_consumidor">Índice de sentimiento del consumidor</label><br>
-        <input type="number" id="sentimiento_consumidor" step="0.01" min="43.55" max="195.02" value="77.78"><br>
-        <small>Rango de entrenamiento: 43.5 – 195.0</small>
-      </p>
+      <div class="field">
+        <label for="sentimiento_consumidor">Índice de sentimiento del consumidor</label>
+        <input type="number" id="sentimiento_consumidor" step="0.01" min="43.55" max="195.02" value="77.78">
+        <small class="hint">Rango de entrenamiento: 43.5 – 195.0</small>
+      </div>
 
-      <p>
-        <label for="inicios_vivienda">Inicios de vivienda (unidades)</label><br>
-        <input type="number" id="inicios_vivienda" step="0.01" min="15.70" max="877.40" value="229.60"><br>
-        <small>Rango de entrenamiento: 15.7 – 877.4</small>
-      </p>
+      <div class="field">
+        <label for="inicios_vivienda">Inicios de vivienda (unidades)</label>
+        <input type="number" id="inicios_vivienda" step="0.01" min="15.70" max="877.40" value="229.60">
+        <small class="hint">Rango de entrenamiento: 15.7 – 877.4</small>
+      </div>
 
-      <p>
-        <label for="poblacion_miles">Población (miles)</label><br>
-        <input type="number" id="poblacion_miles" step="0.01" min="5533.30" max="18470.50" value="6436.05"><br>
-        <small>Rango de entrenamiento: 5533.3 – 18470.5</small>
-      </p>
+      <div class="field">
+        <label for="poblacion_miles">Población (miles)</label>
+        <input type="number" id="poblacion_miles" step="0.01" min="5533.30" max="18470.50" value="6436.05">
+        <small class="hint">Rango de entrenamiento: 5533.3 – 18470.5</small>
+      </div>
 
-      <p>
-        <label for="indice_precios_productor">Índice de precios al productor</label><br>
-        <input type="number" id="indice_precios_productor" step="0.01" min="103.83" max="131.75" value="118.35"><br>
-        <small>Rango de entrenamiento: 103.8 – 131.8</small>
-      </p>
+      <div class="field">
+        <label for="indice_precios_productor">Índice de precios al productor</label>
+        <input type="number" id="indice_precios_productor" step="0.01" min="103.83" max="131.75" value="118.35">
+        <small class="hint">Rango de entrenamiento: 103.8 – 131.8</small>
+      </div>
 
-      <p>
-        <label for="pandemia">Pandemia (mar–may 2020)</label><br>
+      <div class="field">
+        <label for="pandemia">Pandemia (mar–may 2020)</label>
         <select id="pandemia">
           <option value="0">0 — sin pandemia</option>
           <option value="1">1 — pandemia</option>
         </select>
-      </p>
+      </div>
 
-      <p>
-        <label for="ciudad">Ciudad</label><br>
+      <div class="field">
+        <label for="ciudad">Ciudad</label>
         <select id="ciudad">
           <option value="Barranquilla">Barranquilla</option>
           <option value="Bogota">Bogota</option>
@@ -84,10 +326,10 @@
           <option value="Cartagena">Cartagena</option>
           <option value="Medellin">Medellin</option>
         </select>
-      </p>
+      </div>
 
-      <p>
-        <label for="subsector">Subsector</label><br>
+      <div class="field">
+        <label for="subsector">Subsector</label>
         <select id="subsector">
           <option value="Accesorios y tapiceria">Accesorios y tapiceria</option>
           <option value="Articulos de decoracion">Articulos de decoracion</option>
@@ -105,18 +347,17 @@
           <option value="Pisos y revestimientos">Pisos y revestimientos</option>
           <option value="Puertas y ventanas">Puertas y ventanas</option>
         </select>
-      </p>
+      </div>
 
-      <p>
-        <label for="mes_num">Mes (1–12)</label><br>
-        <input type="range" id="mes_num" min="1" max="12" step="1" value="12"
-               oninput="document.getElementById('mes_txt').textContent=this.value"><br>
-        <small>Mes seleccionado: <strong id="mes_txt">12</strong> (diciembre, pico estacional)</small>
-      </p>
-    </form>
+      <div class="field">
+        <label for="mes_num">Mes (1–12)</label>
+        <input type="range" id="mes_num" min="1" max="12" step="1" value="12">
+        <small class="hint">Mes seleccionado: <strong id="mes_txt">12</strong> (diciembre, pico estacional)</small>
+      </div>
+    </div>
 
-    <p><button id="btn" type="button">Predecir</button></p>
-    <div id="resultado" role="status" aria-live="polite"></div>
+    <button id="btn" type="button">Predecir</button>
+    <div id="resultado" role="status" aria-live="polite" hidden></div>
   </section>
 
   <section>
@@ -164,6 +405,7 @@
 <script>
 // --MODELO CORE START--
 const MODELO = JSON.parse(document.getElementById("modelo-datos").textContent);
+
 function predecir(v) {
   const f = [];
   for (const c of MODELO.numCols) {
@@ -173,7 +415,9 @@ function predecir(v) {
   for (const c of MODELO.catCols) {
     const cats = MODELO.cats[c];
     const idx = cats.indexOf(String(v[c]));
-    for (let i = 0; i < cats.length; i++) f.push(idx === -1 ? 0 : (i === idx ? 1 : 0));
+    for (let i = 0; i < cats.length; i++) {
+      f.push(idx === -1 ? 0 : (i === idx ? 1 : 0));
+    }
   }
   let y = MODELO.intercept;
   for (let i = 0; i < f.length; i++) y += MODELO.coef[i] * f[i];
@@ -181,10 +425,22 @@ function predecir(v) {
 }
 // --MODELO CORE END--
 
+const mes = document.getElementById("mes_num");
+const mesTxt = document.getElementById("mes_txt");
+
+mes.addEventListener("input", () => {
+  mesTxt.textContent = mes.value;
+});
+
 document.getElementById("btn").addEventListener("click", () => {
+  const el = document.getElementById("resultado");
+
   try {
     const v = {};
-    for (const c of MODELO.numCols) v[c] = Number(document.getElementById(c).value);
+    for (const c of MODELO.numCols) {
+      v[c] = Number(document.getElementById(c).value);
+    }
+
     v.pandemia = Number(document.getElementById("pandemia").value);
     v.ciudad = document.getElementById("ciudad").value;
     v.subsector = document.getElementById("subsector").value;
@@ -192,12 +448,14 @@ document.getElementById("btn").addEventListener("click", () => {
 
     const y = predecir(v);
 
-    const el = document.getElementById("resultado");
+    el.classList.remove("error");
+    el.hidden = false;
     el.innerHTML = "<strong>Demanda estimada: " + y.toFixed(2) +
       " millones de USD</strong><br><small>Mes " + v.mes_num + " · " + v.ciudad +
       " · " + v.subsector + " · misma transformación que el entrenamiento (escala + one-hot).</small>";
   } catch (e) {
-    const el = document.getElementById("resultado");
+    el.classList.add("error");
+    el.hidden = false;
     el.textContent = "Error: " + e.message;
   }
 });
