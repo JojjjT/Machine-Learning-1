@@ -10,6 +10,7 @@ Systems, 12(6), 219. https://doi.org/10.3390/systems12060219
 
 | Página | URL |
 |---|---|
+| **Inicio** — resumen, resultados, figuras e informes | **https://jojjjt.github.io/Machine-Learning-1/** |
 | **App Streamlit completa** — interactiva, corriendo en el navegador (stlite) | **https://jojjjt.github.io/Machine-Learning-1/streamlit.html** |
 | Predictor estático (versión ligera en JavaScript) | https://jojjjt.github.io/Machine-Learning-1/ |
 
