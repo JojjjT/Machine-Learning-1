@@ -1,6 +1,6 @@
 # Proyecto Integrador — Machine Learning I (2026-2)
 
-**Equipo:** Joshua Samad Trujillo Lagos & Juan Andrés Zambrano Mora
+**Equipo:** Santiago Bernal Rozo & Joshua Samad Trujillo Lagos
 **Artículo base:** İnce, M. N. & Taşdemir, Ç. (2024). *Forecasting Retail Sales for Furniture and
 Furnishing Items through the Employment of Multiple Linear Regression and Holt–Winters Models.*
 Systems, 12(6), 219. https://doi.org/10.3390/systems12060219
@@ -31,7 +31,7 @@ Activación única: **Settings → Pages → Source: GitHub Actions**.
 ├── app/                      → despliegue Streamlit (motor dual + modelo portable)
 ├── codigo/                   → scripts ejecutables (datos → modelo → figuras → evaluación)
 ├── datos/                    → dataset, modelo entrenado y particiones de prueba
-├── figuras/                  → 3 figuras de evidencia
+├── figuras/                  → figuras de evidencia (segunda entrega: validación; entrega final: prueba)
 ├── informes/                 → entregas APA 7 (PDF + DOCX)
 ├── pruebas/                  → tests (equivalencia de motores, AppTest, rutas web)
 └── .github/workflows/        → deploy.yml (CI + Pages)
@@ -43,7 +43,9 @@ Activación única: **Settings → Pages → Source: GitHub Actions**.
 |---|---|---|
 | 1 | `codigo/generar_datos_muebles.py` | Genera el dataset simulado fundamentado (5.400 filas) → `datos/datos_muebles_panel.csv` |
 | 2 | `codigo/segunda_entrega_modelado.py` | Partición 60/20/20, línea base **corrida**, pipeline sin fuga, CV 5-pliegues, selección del mejor modelo. Guarda `datos/mejor_modelo.joblib` + `datos/X/y_test_prueba.csv` |
-| 3 | `codigo/generar_figuras.py` | Genera las 3 figuras de evidencia → `figuras/` |
+| 3 | `codigo/generar_figuras_segunda.py` | Figuras de la Segunda Entrega con el conjunto de **validación** (la prueba sigue sellada) → `figuras/segunda_*.png` |
+| 3b | `codigo/verificacion_adicional.py` | Ajuste de hiperparámetros por validación cruzada (α de Ridge, k de KNN), importancia por permutación, validación temporal (2019–2022 → 2023) y correlaciones → `resultados_verificacion/` |
+| 3c | `codigo/generar_figuras.py` | Figuras de la Entrega Final sobre la prueba → `figuras/` |
 | 4 | `codigo/entrega_final_evaluacion.py` | Evalúa el modelo final una vez sobre la **prueba intacta** → `datos/predicciones_prueba.csv` |
 | 5 | `app/despliegue_streamlit.py` | Despliegue local: `streamlit run app/despliegue_streamlit.py` |
 | 6 | `codigo/generar_index_web.py` | Regenera `index.html` y `app/modelo_web.json` tras cambios en el modelo |
@@ -95,6 +97,9 @@ uso y de entrenamiento).
 El workflow `.github/workflows/deploy.yml` **ejecuta Streamlit en CI antes de publicar**
 (`streamlit-check`: prueba funcional con AppTest + health check del servidor real) y solo
 despliega si pasa.
+
+## Uso de inteligencia artificial
+En el proyecto se usó inteligencia artificial generativa (Claude, de Anthropic) como apoyo para revisar el código, verificar las cifras, redactar los informes y preparar la presentación. El equipo revisó cada resultado contra los scripts de este repositorio y responde por su contenido.
 
 ## Pruebas locales
 ```bash

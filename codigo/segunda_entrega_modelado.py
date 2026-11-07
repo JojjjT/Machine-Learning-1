@@ -11,7 +11,7 @@ Corrige los 5 puntos de la retro de la Primera Entrega:
   [R5] metrica justificada por costo (no por costumbre)
 
 Flujo sin fuga: Pipeline(ColumnTransformer) dentro de validacion cruzada.
-Particion 60/20/20 (entrenamiento/validacion/prueba) estratificada por ciudad.
+Particion aleatoria 60/20/20 (entrenamiento/validacion/prueba), semilla 42.
 La prueba NO se toca hasta la Entrega Final.
 """
 import numpy as np

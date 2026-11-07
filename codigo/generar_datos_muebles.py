@@ -145,8 +145,9 @@ assert df["ventas_muebles_millones"].notna().all()
 corr_imp = df["ventas_muebles_millones"].corr(df["importaciones_muebles"])
 corr_sent = df["ventas_muebles_millones"].corr(df["sentimiento_consumidor"])
 corr_viv = df["ventas_muebles_millones"].corr(df["inicios_vivienda"])
-# correlacion a nivel de MES (como el paper, 60 obs) — la que compara con Tabla 2
-mes_avg = df.groupby("mes_num", as_index=False).mean(numeric_only=True)
+# correlacion a nivel de MES: promedio de las 90 filas de cada uno de los 60 meses
+# (como las 60 observaciones mensuales del paper) — la que compara con Tabla 2
+mes_avg = df.groupby("mes", as_index=False).mean(numeric_only=True)
 m_imp = mes_avg["ventas_muebles_millones"].corr(mes_avg["importaciones_muebles"])
 m_sent = mes_avg["ventas_muebles_millones"].corr(mes_avg["sentimiento_consumidor"])
 m_viv = mes_avg["ventas_muebles_millones"].corr(mes_avg["inicios_vivienda"])
